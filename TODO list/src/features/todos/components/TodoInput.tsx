@@ -1,11 +1,14 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { colors, spacing } from '../../../theme';
-import { validateTitle } from '../model';
+import { radius, spacing, Theme, typography, useTheme, useThemedStyles } from '../../../theme';
+import { MAX_TITLE_LENGTH, validateTitle } from '../model';
 import { useTodoStore } from '../store';
 
 export function TodoInput() {
+  const theme = useTheme();
+  const styles = useThemedStyles(createStyles);
   const addTodo = useTodoStore((state) => state.addTodo);
   const [title, setTitle] = useState('');
   const canAdd = validateTitle(title) !== null;
@@ -15,56 +18,73 @@ export function TodoInput() {
   };
 
   return (
-    <View style={styles.row}>
+    <View style={styles.card}>
       <TextInput
         style={styles.input}
         value={title}
         onChangeText={setTitle}
         onSubmitEditing={submit}
         placeholder="Co je potřeba udělat?"
+        placeholderTextColor={theme.colors.textMuted}
         accessibilityLabel="Nový úkol"
         returnKeyType="done"
         submitBehavior="submit"
+        maxLength={MAX_TITLE_LENGTH}
+        selectionColor={theme.colors.primary}
       />
       <Pressable
-        style={[styles.button, !canAdd && styles.buttonDisabled]}
+        style={({ pressed }) => [
+          styles.button,
+          !canAdd && styles.buttonDisabled,
+          pressed && styles.buttonPressed,
+        ]}
         onPress={submit}
         disabled={!canAdd}
         accessibilityRole="button"
         accessibilityLabel="Přidat úkol"
       >
-        <Text style={styles.buttonText}>Přidat</Text>
+        <Ionicons name="add" size={26} color={theme.colors.onPrimary} />
       </Pressable>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#D6D1C4',
-    borderRadius: 8,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    color: colors.text,
-    backgroundColor: '#FFFFFF',
-  },
-  button: {
-    justifyContent: 'center',
-    paddingHorizontal: spacing.md,
-    borderRadius: 8,
-    backgroundColor: colors.text,
-  },
-  buttonDisabled: {
-    opacity: 0.4,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-});
+const createStyles = ({ colors }: Theme) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+      padding: spacing.xs + 2,
+      paddingLeft: spacing.md,
+      borderRadius: radius.lg,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      shadowColor: '#000',
+      shadowOpacity: 0.06,
+      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 4 },
+      elevation: 2,
+    },
+    input: {
+      ...typography.body,
+      flex: 1,
+      paddingVertical: spacing.sm,
+      color: colors.text,
+    },
+    button: {
+      width: 44,
+      height: 44,
+      borderRadius: radius.md,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.primary,
+    },
+    buttonDisabled: {
+      opacity: 0.35,
+    },
+    buttonPressed: {
+      transform: [{ scale: 0.94 }],
+    },
+  });

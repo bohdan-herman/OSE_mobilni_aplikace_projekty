@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { act, render, screen, userEvent } from '@testing-library/react-native';
 
 import { TodoList, TodoSummary } from '../components';
 import { useTodoStore } from '../store';
@@ -13,6 +13,7 @@ function Screen() {
 }
 
 beforeEach(() => {
+  jest.useFakeTimers();
   useTodoStore.setState({
     todos: [
       { id: '1', title: 'Vynést koš', done: false, createdAt: 1 },
@@ -22,7 +23,7 @@ beforeEach(() => {
 });
 
 test('marks a task as done and back', async () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   await render(<Screen />);
 
   const checkbox = screen.getByRole('checkbox', { name: 'Vynést koš' });
@@ -38,7 +39,7 @@ test('marks a task as done and back', async () => {
 });
 
 test('shows how many tasks are done', async () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   await render(<Screen />);
 
   expect(screen.getByText('Hotovo 0 z 2')).toBeOnTheScreen();
@@ -47,7 +48,7 @@ test('shows how many tasks are done', async () => {
 });
 
 test('deletes a task', async () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   await render(<Screen />);
 
   await user.press(screen.getByRole('button', { name: 'Smazat úkol Vynést koš' }));
@@ -58,7 +59,7 @@ test('deletes a task', async () => {
 });
 
 test('shows empty state after deleting the last task', async () => {
-  const user = userEvent.setup();
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   useTodoStore.setState({ todos: [{ id: '1', title: 'Jediný', done: true, createdAt: 1 }] });
   await render(<Screen />);
 
@@ -66,4 +67,12 @@ test('shows empty state after deleting the last task', async () => {
 
   expect(screen.getByText('Žádné úkoly')).toBeOnTheScreen();
   expect(screen.queryByText(/Hotovo/)).not.toBeOnTheScreen();
+});
+
+afterEach(async () => {
+  // Let the progress-bar animation finish inside act().
+  await act(async () => {
+    jest.runOnlyPendingTimers();
+  });
+  jest.useRealTimers();
 });

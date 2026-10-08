@@ -16,6 +16,7 @@ export function TodoList() {
       ListEmptyComponent={EmptyState}
       contentContainerStyle={styles.content}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
       accessibilityLabel="Seznam úkolů"
     />
   );
@@ -23,6 +24,7 @@ export function TodoList() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: spacing.lg,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.xl,
   },
 });
