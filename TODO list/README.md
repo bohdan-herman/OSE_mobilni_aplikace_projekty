@@ -24,6 +24,22 @@ npm run web        # v prohlížeči
 npm run android    # Android emulátor (Android Studio) nebo připojený telefon
 ```
 
+### Spuštění na telefonu (Expo Go)
+
+1. Nainstaluj aplikaci **Expo Go** (Google Play / App Store).
+2. Připoj telefon i počítač ke **stejné Wi-Fi** a spusť `npm start`.
+3. Naskenuj QR kód z terminálu (Android: v Expo Go, iPhone: fotoaparátem).
+
+**Síť s izolací zařízení** (např. eduroam, firemní nebo hotelová Wi-Fi): telefon počítač nevidí
+a Expo Go zůstane na modré obrazovce. V tom případě spusť server přes tunel:
+
+```bash
+npx expo start --tunnel
+```
+
+Při prvním spuštění Expo nabídne instalaci balíčku `@expo/ngrok` — potvrď `Y`.
+Alternativa bez tunelu: sdílet internet z telefonu (hotspot) a připojit k němu počítač.
+
 ## Testování na počítači
 
 | Příkaz                  | Co dělá                                                        |
