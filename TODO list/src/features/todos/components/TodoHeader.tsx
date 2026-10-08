@@ -2,12 +2,15 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { spacing, Theme, typography, useThemedStyles } from '../../../theme';
 
-function formatToday(date: Date) {
+export function formatToday(date: Date) {
+  let text: string;
   try {
-    return date.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
+    text = date.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
   } catch {
-    return date.toDateString();
+    text = date.toDateString();
   }
+  // "čtvrtek 8. října" -> "Čtvrtek 8. října" (capitalize only the first letter)
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export function TodoHeader() {
@@ -31,7 +34,6 @@ const createStyles = ({ colors }: Theme) =>
     date: {
       ...typography.subtitle,
       color: colors.primary,
-      textTransform: 'capitalize',
     },
     title: {
       ...typography.title,

@@ -1,0 +1,14 @@
+appId: host.exp.exponent
+name: Úkoly zůstanou po restartu
+---
+- runFlow: subflows/launch.yaml
+- tapOn: 'Nový úkol'
+- inputText: 'E2E uložený'
+- pressKey: Enter
+- assertVisible: 'E2E uložený'
+- stopApp
+- runFlow: subflows/launch.yaml
+- assertVisible: 'E2E uložený'
+# cleanup
+- tapOn: 'Smazat úkol E2E uložený'
+- assertNotVisible: 'E2E uložený'

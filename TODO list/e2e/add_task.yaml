@@ -1,0 +1,11 @@
+appId: host.exp.exponent
+name: Přidání úkolu
+---
+- runFlow: subflows/launch.yaml
+- tapOn: 'Nový úkol'
+- inputText: 'E2E přidat'
+- tapOn: 'Přidat úkol'
+- assertVisible: 'E2E přidat'
+# cleanup
+- tapOn: 'Smazat úkol E2E přidat'
+- assertNotVisible: 'E2E přidat'

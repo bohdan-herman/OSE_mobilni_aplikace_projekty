@@ -1,0 +1,9 @@
+# Opens the app in Expo Go running on an Android emulator.
+# Override the dev server URL with: maestro test -e APP_URL=exp://<ip>:8081 e2e/
+appId: host.exp.exponent
+---
+- launchApp
+- openLink: ${APP_URL || 'exp://127.0.0.1:8081'}
+- extendedWaitUntil:
+    visible: 'Moje úkoly'
+    timeout: 60000

@@ -41,7 +41,7 @@ export function TodoItem({ todo }: Props) {
         style={styles.toggle}
         onPress={() => toggleTodo(todo.id)}
         accessibilityRole="checkbox"
-        accessibilityState={{ checked: todo.done }}
+        aria-checked={todo.done}
         accessibilityLabel={todo.title}
         hitSlop={8}
       >

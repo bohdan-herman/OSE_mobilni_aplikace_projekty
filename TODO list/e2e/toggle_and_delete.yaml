@@ -1,0 +1,20 @@
+appId: host.exp.exponent
+name: Označení jako hotový a smazání
+---
+- runFlow: subflows/launch.yaml
+- tapOn: 'Nový úkol'
+- inputText: 'E2E hotovo'
+- pressKey: Enter
+- assertVisible:
+    text: 'E2E hotovo'
+    checked: false
+- tapOn: 'E2E hotovo'
+- assertVisible:
+    text: 'E2E hotovo'
+    checked: true
+- tapOn: 'E2E hotovo'
+- assertVisible:
+    text: 'E2E hotovo'
+    checked: false
+- tapOn: 'Smazat úkol E2E hotovo'
+- assertNotVisible: 'E2E hotovo'

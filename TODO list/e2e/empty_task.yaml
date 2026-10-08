@@ -1,0 +1,14 @@
+appId: host.exp.exponent
+name: Prázdný úkol nejde přidat
+---
+- runFlow: subflows/launch.yaml
+- tapOn: 'Nový úkol'
+- inputText: '   '
+- assertVisible:
+    text: 'Přidat úkol'
+    enabled: false
+- tapOn: 'Přidat úkol'
+- pressKey: Enter
+- assertVisible:
+    text: 'Přidat úkol'
+    enabled: false
