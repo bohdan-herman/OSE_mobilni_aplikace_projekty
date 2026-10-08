@@ -1,28 +1,43 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+import { TodoInput, TodoList } from './src/features/todos';
 import { colors, spacing } from './src/theme';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>TODO list</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <Text style={styles.title} accessibilityRole="header">
+            TODO list
+          </Text>
+          <TodoInput />
+          <TodoList />
+        </KeyboardAvoidingView>
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
     padding: spacing.lg,
+    gap: spacing.md,
   },
   title: {
     color: colors.text,
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
   },
 });
