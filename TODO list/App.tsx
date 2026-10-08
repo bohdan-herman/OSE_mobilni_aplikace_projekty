@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { TodoInput, TodoList } from './src/features/todos';
+import { TodoInput, TodoList, TodoSummary } from './src/features/todos';
 import { colors, spacing } from './src/theme';
 
 export default function App() {
@@ -16,6 +16,7 @@ export default function App() {
           <Text style={styles.title} accessibilityRole="header">
             TODO list
           </Text>
+          <TodoSummary />
           <TodoInput />
           <TodoList />
         </KeyboardAvoidingView>
